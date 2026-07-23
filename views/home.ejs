@@ -1,0 +1,50 @@
+<%- include('partials/head') %>
+</head>
+<body>
+  <%- include('partials/nav') %>
+  <main class="container mx-auto mt-10 max-w-7xl px-4">
+    <h2 class="text-3xl sm:text-4xl text-gray-800 font-extrabold text-center mb-8">
+      Here are our registered homes
+    </h2>
+
+    <% if (!registeredHomes || registeredHomes.length === 0) { %>
+      <p class="text-center text-gray-600">No homes registered yet.</p>
+    <% } else { %>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% registeredHomes.forEach(home => { %>
+          <li class="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200 overflow-hidden">
+            <div class="relative">
+              <div class="h-48 bg-gray-100 rounded-t-md overflow-hidden flex items-center justify-center text-gray-300">
+                <!-- placeholder image -->
+                <% if (home.imageUrl) { %>
+                  <img src="<%= home.imageUrl %>" alt="<%= home.houseName %>" class="w-full h-full object-cover"/>
+                <% } else { %>
+                  <svg class="w-24 h-24 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M7 7V4a2 2 0 012-2h6a2 2 0 012 2v3" />
+                  </svg>
+                <% } %>
+              </div>
+              <div class="p-5">
+                <h3 class="text-lg font-semibold text-gray-800 mb-1 truncate"><%= home.houseName %></h3>
+                <% if (home.location) { %>
+                  <p class="text-sm text-gray-500 mb-3 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.5 7-10a7 7 0 10-14 0c0 5.5 7 10 7 10z" />
+                    </svg>
+                    <span><%= home.location %></span>
+                  </p>
+                <% } %>
+                <div class="flex items-center justify-between mt-4">
+                  <span class="text-lg font-bold text-red-600"><%= home.price ? ('$' + home.price) : 'Contact' %></span>
+                  <a href="/homes/<%= home.id %>" class="text-sm bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-md shadow">View</a>
+                </div>
+              </div>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </main>
+</body>
+</html>
