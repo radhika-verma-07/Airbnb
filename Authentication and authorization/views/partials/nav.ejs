@@ -1,0 +1,164 @@
+<%
+  const current = (currentPage || '').trim().toLowerCase();
+
+  const isCurrent = (...pages) =>
+    pages.some((page) => current === String(page).trim().toLowerCase());
+
+  const navLinkBase =
+    'rounded-full px-3.5 py-2 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-rose-300 sm:px-4';
+
+  const navLinkActive =
+    'bg-rose-500 text-white shadow-md shadow-rose-950/30';
+
+  const navLinkInactive =
+    'text-slate-200 hover:-translate-y-0.5 hover:bg-slate-800 hover:text-white';
+%>
+
+<header class="sticky top-0 z-50 border-b border-slate-700/80 bg-slate-950 text-white shadow-lg shadow-slate-950/30">
+
+  <nav
+    class="container mx-auto flex flex-col gap-5 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8"
+    aria-label="Main navigation"
+  >
+
+    <!-- Logo -->
+    <a
+      href="/"
+      class="group flex shrink-0 items-center justify-center gap-3 self-center rounded-full px-3 py-2 transition duration-200 hover:bg-slate-800/80 focus:outline-none focus:ring-2 focus:ring-rose-300 sm:self-auto"
+    >
+
+      <span
+        class="flex h-10 w-10 items-center justify-center rounded-full bg-rose-500 text-xl font-black text-white shadow-md shadow-rose-950/40 transition duration-200 group-hover:scale-105 group-hover:bg-rose-400"
+      >
+        a
+      </span>
+
+      <div class="flex items-center gap-3">
+        <span
+          class="text-xl font-extrabold tracking-tight text-white transition-colors group-hover:text-rose-100"
+        >
+          airbnb
+        </span>
+
+        <span
+          class="hidden border-l border-slate-600 pl-3 text-[10px] font-medium uppercase tracking-[0.22em] text-slate-300 md:inline"
+        >
+          Escapes
+        </span>
+
+      </div>
+    </a>
+
+    <!-- Navigation Links -->
+    <div
+      class="flex w-full flex-wrap items-center justify-center gap-2.5 text-sm font-semibold sm:gap-3 lg:w-auto lg:justify-end"
+    >
+
+      <!-- Home -->
+      <a
+        href="/"
+        aria-current="<%= isCurrent('home', 'index') ? 'page' : 'false' %>"
+        class="<%= navLinkBase %> <%= isCurrent('home', 'index') ? navLinkActive : navLinkInactive %>"
+      >
+        Airbnb Home
+      </a>
+
+      <% if (isLoggedIn) { %>
+
+        <% if (user && user.userType === 'guest') { %>
+          <!-- Guest Links -->
+          <a
+            href="/homes"
+            aria-current="<%= isCurrent('homes') ? 'page' : 'false' %>"
+            class="<%= navLinkBase %> <%= isCurrent('homes') ? navLinkActive : navLinkInactive %>"
+          >
+            Homes
+          </a>
+
+          <a
+            href="/favourites"
+            aria-current="<%= isCurrent('favourites') ? 'page' : 'false' %>"
+            class="<%= navLinkBase %> <%= isCurrent('favourites') ? navLinkActive : navLinkInactive %>"
+          >
+            Favourites
+          </a>
+
+          <a
+            href="/bookings"
+            aria-current="<%= isCurrent('bookings') ? 'page' : 'false' %>"
+            class="<%= navLinkBase %> <%= isCurrent('bookings') ? navLinkActive : navLinkInactive %>"
+          >
+            Bookings
+          </a>
+
+        <% } else { %>
+          <!-- Host Links -->
+          <a
+            href="/host/host-home-list"
+            aria-current="<%= isCurrent('host-home-list') ? 'page' : 'false' %>"
+            class="<%= navLinkBase %> <%= isCurrent('host-home-list') ? navLinkActive : navLinkInactive %>"
+          >
+            Host Homes
+          </a>
+
+          <a
+            href="/host/add-home"
+            aria-current="<%= isCurrent('add-home') ? 'page' : 'false' %>"
+            class="<%= navLinkBase %> <%= isCurrent('add-home') ? navLinkActive : navLinkInactive %>"
+          >
+            Add Home
+          </a>
+
+        <% } %>
+
+      <% } %>
+
+
+      <!-- Logged Out -->
+      <% if (!isLoggedIn) { %>
+        <div
+          class="ml-1 flex items-center gap-2 rounded-full border border-slate-600 bg-slate-800 px-2.5 py-1.5 text-slate-100 shadow-sm"
+        >
+
+          <span
+            class="flex h-8 w-8 items-center justify-center rounded-full bg-rose-500 text-sm font-bold text-white transition-colors hover:bg-rose-400"
+          >
+            A
+          </span>
+
+          <span class="hidden text-sm font-medium sm:inline">
+            Account
+          </span>
+        </div>
+
+        <a
+          href="/signup"
+          class="rounded-full border border-rose-400 bg-rose-500 px-3.5 py-2 text-sm font-semibold text-white shadow-sm shadow-rose-950/30 transition duration-200 hover:-translate-y-0.5 hover:bg-rose-400 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-rose-300 sm:px-4"
+        >
+          Sign Up
+        </a>
+
+        <a
+          href="/login"
+          class="rounded-full border border-slate-600 bg-slate-800 px-3.5 py-2 text-sm font-semibold text-white transition duration-200 hover:-translate-y-0.5 hover:border-slate-500 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-rose-300 sm:px-4"
+        >
+          Login
+        </a>
+
+      <% } else { %>
+        <!-- Logout -->
+        <form action="/logout" method="POST">
+          <button
+            type="submit"
+            class="rounded-full border border-rose-400 bg-rose-500 px-3.5 py-2 text-sm font-semibold text-white shadow-sm shadow-rose-950/30 transition duration-200 hover:-translate-y-0.5 hover:bg-rose-400 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-rose-300 sm:px-4"
+          >
+            Logout
+          </button>
+        </form>
+      <% } %>
+
+    </div>
+
+  </nav>
+
+</header>

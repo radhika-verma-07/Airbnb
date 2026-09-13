@@ -1,0 +1,49 @@
+<%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/nav') %>
+  <main class="container mx-auto mt-10 max-w-7xl px-4">
+    <h2 class="text-3xl sm:text-4xl text-gray-800 font-extrabold text-center mb-8">
+      Hey Host! Here are your homes:
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-8">
+
+  <% registeredHomes.forEach(home => { %>
+
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+
+      <img
+      src="<%= home.photoUrl %>"
+      alt="<%= home.houseName %>"
+      class="w-full h-48 object-cover"
+      onerror="this.onerror=null; this.src='https://a0.muscache.com/im/pictures/hosting/Hosting-1110757992262354976/original/e2bfa299-4dda-4081-939a-eb2635534a0d.jpeg?im_w=960';"
+      />
+
+      <div class="p-4">
+
+        <h3 class="text-xl font-semibold">
+          <%= home.houseName %>
+        </h3>
+
+        <p><%= home.location %></p>
+
+        <div class="flex justify-between items-center mt-3">
+
+          <span class="text-red-600 font-bold">
+            Rs <%= home.price %> / night
+          </span>
+
+          <span>
+            ⭐ <%= home.rating %>
+          </span>
+
+        </div>
+        <a href="/host/edit-home/<%=  %>?editing=true" class="bg-blue-500 font-bold py-1.5 px-4 rounded">Edit</a>
+        <form action="/host/delete-home/<%=  %>" method="POST">
+          <button type="submit" class="bg-red-500 font-bold py-1.5 px-4 rounded">Delete</button>
+        </form>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
