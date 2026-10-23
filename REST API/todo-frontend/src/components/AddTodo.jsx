@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 function AddTodo({ onNewItem }) {
-  const [todoName, setTodoName] = useState();
-  const [dueDate, setDueDate] = useState();
+  const [todoName, setTodoName] = useState("");
+  const [dueDate, setDueDate] = useState("");
 
   const handleNameChange = (event) => {
     setTodoName(event.target.value);
@@ -13,32 +13,40 @@ function AddTodo({ onNewItem }) {
   };
 
   const handleAddButtonClicked = () => {
-    onNewItem(todoName, dueDate);
+    if (!todoName.trim()) return;
+
+    onNewItem(todoName.trim(), dueDate);
     setDueDate("");
     setTodoName("");
   };
 
   return (
-    <div className="container text-center">
-      <div className="row kg-row">
-        <div className="col-6">
+    <div className="todo-form-wrap">
+      <div className="todo-form-row">
+        <div className="todo-input-wrap todo-name-wrap">
           <input
+            className="todo-input todo-name-input"
             type="text"
             placeholder="Enter Todo Here"
             value={todoName}
             onChange={handleNameChange}
           />
         </div>
-        <div className="col-4">
-          <input type="date" value={dueDate} onChange={handleDateChange} />
+        <div className="todo-input-wrap todo-date-wrap">
+          <input
+            className="todo-input todo-date-input"
+            type="date"
+            value={dueDate}
+            onChange={handleDateChange}
+          />
         </div>
-        <div className="col-2">
+        <div className="todo-button-wrap">
           <button
             type="button"
-            className="btn btn-success kg-button"
+            className="todo-add-button"
             onClick={handleAddButtonClicked}
           >
-            Add
+            <span className="todo-plus-icon">+</span> Add
           </button>
         </div>
       </div>
